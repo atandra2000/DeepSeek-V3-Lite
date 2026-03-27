@@ -1,0 +1,54 @@
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.env
+.venv
+venv/
+
+# Model weights and checkpoints
+*.pt
+*.pth
+*.safetensors
+checkpoints/
+outputs/
+runs/
+
+# FP8 compiled artifacts
+*.so
+*.cubin
+*.ptx
+
+# Large dataset files
+*.bin
+*.npy
+*.parquet
+*.tar
+*.zip
+data/fineweb/
+data/stack/
+data/math/
+data/sft/
+workspace/
+
+# Training logs and wandb
+*.log
+wandb/
+training.log
+
+# Generated images and results
+results/*.png
+!assets/*.png
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store

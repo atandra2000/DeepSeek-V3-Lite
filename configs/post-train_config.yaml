@@ -1,0 +1,48 @@
+# configs/posttrain_config.yaml
+model:
+  # Load from pretrain checkpoint
+  checkpoint_path: "./checkpoints/pretrain/step_50000"
+  dtype: "bf16" # Use BF16 for stability in post-training
+
+sft:
+  data_path: "./data/sft"
+  epochs: 2
+  lr: 5e-6
+  min_lr: 1e-6
+  batch_size: 4
+  max_seq_len: 8192
+  packing: false
+  mask_strategy: "sample_isolation"
+
+rl:
+  method: "GRPO"
+  data_path: "./data/rl"
+  group_size: 8
+  kl_penalty: 0.04
+  epsilon: 0.2
+  # Reward Models
+  rule_based: true
+  model_based: true
+  reward_model_path: "./checkpoints/reward_model"
+  # Distillation from Reasoning Model (R1-like)
+  distillation:
+    enabled: true
+    teacher_model: "deepseek-r1-distill"
+    loss_weight: 0.5
+    temperature: 0.7
+
+generation:
+  max_new_tokens: 4096
+  temperature: 0.7
+  top_p: 0.9
+  # Speculative Decoding (MTP)
+  speculative:
+    enabled: true
+    draft_steps: 1
+    acceptance_threshold: 0.8
+
+logging:
+  project: "deepseek-v3-post-train"
+  run_name: "post-train-rl"
+  wandb_key: ""
+  log_interval: 10

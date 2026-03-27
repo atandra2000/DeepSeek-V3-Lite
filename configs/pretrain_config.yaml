@@ -1,0 +1,66 @@
+# configs/pretrain_config.yaml
+model:
+  vocab_size: 102400
+  dim: 2048
+  inter_dim: 10944
+  moe_inter_dim: 1408
+  n_layers: 27
+  n_dense_layers: 1
+  n_heads: 16
+  n_routed_experts: 64
+  n_shared_experts: 2
+  n_activated_experts: 6
+  n_expert_groups: 1        # Number of expert groups for group-based routing
+  n_limited_groups: 1       # Number of groups to route to (node-limited routing)
+  q_lora_rank: 0
+  kv_lora_rank: 512
+  qk_nope_head_dim: 128
+  qk_rope_head_dim: 64
+  v_head_dim: 128
+  max_seq_len: 4096
+  rope_theta: 10000.0
+  rope_factor: 40           # YaRN scale factor for extended context
+  mscale: 1.0               # Attention scale multiplier for long-context RoPE
+  route_scale: 1.0          # MoE routing weight scale
+  dtype: "fp8"              # fp8 or bf16
+  scale_fmt: "ue8m0"        # FP8 scale format
+
+training:
+  # 8x RTX5090 (32GB) Budget
+  micro_batch_size: 2
+  gradient_accumulation_steps: 4
+  total_steps: 50000
+  warmup_steps: 2000
+  lr: 2.2e-4
+  min_lr: 2.2e-5
+  min_lr_ratio: 0.1         # min_lr = lr * min_lr_ratio
+  weight_decay: 0.1
+  beta1: 0.9
+  beta2: 0.95
+  grad_clip: 1.0
+  # FP8 Settings
+  fp8_enabled: true
+  fp8_accumulation: true
+  fp8_block_size: 128
+  # MoE Load Balancing (Aux-Loss-Free)
+  bias_update_speed: 0.001
+  balance_loss_alpha: 0.0001
+  # Multi-Token Prediction
+  mtp_depth: 1
+  mtp_loss_weight: 0.3
+  # Checkpointing
+  save_interval: 1000
+  save_dir: "./checkpoints/pretrain"
+  log_interval: 100
+
+data:
+  train_data_path: "./data/pretrain"
+  tokenizer_path: "deepseek-ai/deepseek-coder-v2-lite"
+  packing: true
+  fim_rate: 0.1
+
+hardware:
+  n_gpu: 8
+  pipeline_parallel: 1
+  data_parallel: 8
+  expert_parallel: 1
