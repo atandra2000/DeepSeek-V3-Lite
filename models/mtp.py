@@ -20,7 +20,7 @@ class MTPBlock(nn.Module):
     The two input pre-norms (norm_h, norm_e) are critical: h_prev has already passed through the main model's
     final RMSNorm and sits in a well-scaled space, while e_target is a raw embedding lookup. Without independent
     normalisation, two streams arrive at the projection with mismatched magnitudes, biasing the fusion.
-    
+
     Causal mask
     -----------
     Built once and cached as a registered buffer; resized on demand when a longer sequence is seen.
@@ -111,7 +111,7 @@ class MTPModule(nn.Module):
     When `output_head` is None, the module raises at forward time.  The intended usage is for the caller
     (MultiTokenPrediction) to inject a shared weight reference via `set_output_head()` after construction, tying all
     MTP modules and the main LM head to the same projection. This matches the DeepSeek-V3 design.
-    
+
     """
 
     def __init__(self, config: dict, depth: int = 1):

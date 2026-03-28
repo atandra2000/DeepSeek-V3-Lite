@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from dataclasses import dataclass
-from typing import List, Callable, Optional
+from typing import List, Callable
 import copy
 
 

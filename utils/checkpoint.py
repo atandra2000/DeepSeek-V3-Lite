@@ -124,7 +124,7 @@ class CheckpointManager:
             step:      step number to load
             device:    device string for weight placement (e.g. "cuda:0")
             optimizer: if provided, restores optimiser state from checkpoint
-            strict:    if True (default), raise on missing or unexpected keys. Set False only for partial loading         
+            strict:    if True (default), raise on missing or unexpected keys. Set False only for partial loading
 
         Returns:
             metadata dict (includes "step", scheduler state if saved, etc.)

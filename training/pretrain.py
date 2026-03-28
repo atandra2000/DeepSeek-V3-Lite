@@ -37,7 +37,7 @@ class WarmupCosineDecayScheduler(_LRScheduler):
     Linear warmup → cosine decay → flat minimum LR.
 
     Phase 1  [0, warmup_steps):           LR scales linearly from 0 to base_lr.
-    Phase 2  [warmup_steps, total_steps): LR follows a cosine curve from base_lr down to base_lr * min_lr_ratio.                        
+    Phase 2  [warmup_steps, total_steps): LR follows a cosine curve from base_lr down to base_lr * min_lr_ratio.
     Phase 3  [total_steps, ∞):            LR is fixed at base_lr * min_lr_ratio.
     """
 
@@ -73,7 +73,7 @@ class WarmupCosineDecayScheduler(_LRScheduler):
 @dataclass
 class TrainingConfig:
     """All training hyperparameters in one place. `model_config` holds the full parsed YAML dict"""
-    
+
     # Full parsed config dict (set by main())
     model_config: dict = field(default_factory=dict)
 
@@ -179,7 +179,7 @@ class Pretrainer:
         self.logger = get_logger()
 
         # ── Model ──────────────────────────────────────────────────────────
-        
+
         self._log(f"Rank {self.rank}: initialising model...")
         raw_model = Transformer(
             config.model_config,
@@ -289,7 +289,7 @@ class Pretrainer:
 
     def _amp_context(self):
         """Return the appropriate AMP context for the configured dtype.
-        
+
         When fp8_enabled, FP8 arithmetic is handled inside FP8Linear.forward() so the outer autocast just needs to
         cover the remaining BF16 ops.
         """
@@ -579,7 +579,7 @@ def main() -> None:
 
     config = TrainingConfig(
         # Store the full config dict so the Transformer constructor gets both the "model" block and any nested keys.
-        # 
+        #
         model_config=yaml_cfg,
 
         data_path=args.data_path or d.get("train_data_path", "data/pretrain_data.bin"),

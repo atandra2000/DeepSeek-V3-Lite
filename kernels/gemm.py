@@ -360,8 +360,6 @@ class _FP8LinearSTE(torch.autograd.Function):
     @staticmethod
     def backward(ctx, grad_output: torch.Tensor):
         x, weight_fp8, weight_scale = ctx.saved_tensors
-        block_size = ctx.block_size
-
         # Dequantise weight to float32 for gradient computation
         w_fp32 = _fp8_dequant_to_float(weight_fp8, weight_scale)
 

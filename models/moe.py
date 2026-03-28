@@ -149,7 +149,7 @@ class DeepSeekMoE(nn.Module):
     (indices [experts_start, experts_end)).  Shared experts are replicated
     on all ranks and run unconditionally.
 
-    All-reduce 
+    All-reduce
     ------------
     Only the routed expert output (y_routed) is all-reduced across ranks.
     Shared expert outputs are computed locally on every rank and added AFTER
@@ -157,7 +157,7 @@ class DeepSeekMoE(nn.Module):
 
     Routing cache
     -------------
-    The most recent (weights, indices) pair is stored in self._last_weights and self._last_indices 
+    The most recent (weights, indices) pair is stored in self._last_weights and self._last_indices
     after every forward pass. This allows get_load_balance_loss() and get_routing_stats() to reuse routing
     without a second gate call, and allows pretrain.py to call update_gate_bias() without re-embedding the input batch.
     """
@@ -206,16 +206,15 @@ class DeepSeekMoE(nn.Module):
             Tensor of same shape as x.
         """
         shape = x.shape
-        flat  = x.view(-1, self.dim)   # (T, dim)
-        T     = flat.size(0)
+        flat  = x.view(-1, self.dim)   # (B*T, dim)
 
-        weights, indices = self.gate(flat)  # (T, topk), (T, topk)
+        weights, indices = self.gate(flat)  # (B*T, topk), (B*T, topk)
         # Cache routing for auxiliary loss / stats / bias update
         self._last_weights = weights.detach()
         self._last_indices = indices.detach()
 
         # ── Routed expert dispatch ─────────────────────────────────────────
-        
+
         y_routed = torch.zeros_like(flat)
         # Build boolean token-assignment matrix once to  eliminate per-expert CPU syncs.
         # token_expert_mask: (T, n_local_experts) — True where token t routes to the local expert at column e.
@@ -241,7 +240,7 @@ class DeepSeekMoE(nn.Module):
             y_routed.index_add_(0, token_ids, expert_out * scale)
 
         # ── All-reduce routed output only ──────────────────────────────────
-        
+
         # Shared experts are replicated and must NOT be included in the all-reduce.
         if self.world_size > 1:
             dist.all_reduce(y_routed, op=dist.ReduceOp.SUM)

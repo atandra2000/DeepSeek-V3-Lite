@@ -26,7 +26,7 @@ class MultiHeadLatentAttention(nn.Module):
       are computed directly against the cached latent.  V is also recovered
       from the latent post-softmax.  This avoids materialising full K/V
       tensors during decode.
-      
+
     • YaRN-compatible softmax scaling: for long contexts, the softmax scale is
       multiplied by mscale > 1 to prevent underflow.
     """
@@ -196,7 +196,7 @@ class MultiHeadLatentAttention(nn.Module):
         """
         dtype = x.dtype
         x_c   = torch.view_as_complex(x.float().reshape(*x.shape[:-1], -1, 2))
-        
+
         # freqs: (seqlen, rope_dim//2) → broadcast (1, seqlen, 1, rope_dim//2)
         freqs = self.freqs_cis[start_pos : start_pos + seqlen].view(1, seqlen, 1, -1)
         return torch.view_as_real(x_c * freqs).flatten(-2).to(dtype)

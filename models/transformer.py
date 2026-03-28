@@ -255,7 +255,7 @@ class Transformer(nn.Module):
         """
         Args:
             tokens:    (bsz, seqlen) integer token IDs
-            start_pos: KV-cache offset.  0 for training / full prefill incremented by seqlen each decode step.   
+            start_pos: KV-cache offset.  0 for training / full prefill incremented by seqlen each decode step.
             use_cache: passed through to each MLA layer.
 
         Returns:
@@ -334,7 +334,7 @@ class Transformer(nn.Module):
         output          = input_ids.clone()
 
         # ── Prefill ────────────────────────────────────────────────────────
-        
+
         # Encode the full prompt once; this populates the KV cache for all positions [0, prompt_len).
         prefill_logits = self.forward(
             output, start_pos=0, use_cache=True)   # (bsz, prompt_len, vocab)
@@ -342,7 +342,7 @@ class Transformer(nn.Module):
         next_logits = prefill_logits[:, -1, :]   # (bsz, vocab)
 
         # ── Decode ─────────────────────────────────────────────────────────
-        
+
         for step in range(max_new_tokens):
             next_token = self._sample(next_logits, temperature, top_p, top_k)
             output     = torch.cat([output, next_token], dim=1)

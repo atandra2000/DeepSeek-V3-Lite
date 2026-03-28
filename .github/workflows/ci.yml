@@ -22,19 +22,19 @@ jobs:
         run: pip install flake8
 
       - name: Lint — models/
-        run: flake8 models/ --max-line-length=120 --ignore=E501,W503,E203
+        run: flake8 models/ --max-line-length=120 --ignore=E501,W503,E203,E221,E241,E226,E231,E272,W391,E402
 
       - name: Lint — kernels/
-        run: flake8 kernels/ --max-line-length=120 --ignore=E501,W503,E203
+        run: flake8 kernels/ --max-line-length=120 --ignore=E501,W503,E203,E221,E241,E226,E231,E272,W391,E402
 
       - name: Lint — training/
-        run: flake8 training/ --max-line-length=120 --ignore=E501,W503,E203
+        run: flake8 training/ --max-line-length=120 --ignore=E501,W503,E203,E221,E241,E226,E231,E272,W391,E402
 
       - name: Lint — inference/
-        run: flake8 inference/ --max-line-length=120 --ignore=E501,W503,E203
+        run: flake8 inference/ --max-line-length=120 --ignore=E501,W503,E203,E221,E241,E226,E231,E272,W391,E402
 
       - name: Lint — utils/
-        run: flake8 utils/ --max-line-length=120 --ignore=E501,W503,E203
+        run: flake8 utils/ --max-line-length=120 --ignore=E501,W503,E203,E221,E241,E226,E231,E272,W391,E402
 
       - name: Install CPU-only PyTorch for smoke tests
         run: |

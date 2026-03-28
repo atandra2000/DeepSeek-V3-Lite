@@ -9,11 +9,10 @@ Architecture (DeepSeek-V3, Section 5.4.3):
 """
 import sys
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Tuple
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 sys.path.append(str(Path(__file__).parent.parent))
 from models.mtp import MTPModule
